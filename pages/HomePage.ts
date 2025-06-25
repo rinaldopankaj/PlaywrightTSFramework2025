@@ -1,0 +1,33 @@
+import { expect, Locator, Page } from '@playwright/test';
+
+export class HomePage {
+
+    private readonly page: Page;
+    private readonly myAccountBtn: Locator;
+    private readonly loginBtn: Locator;
+    private readonly registerBtn: Locator;
+    private readonly registerTxt: Locator;
+    private readonly loginTxt: Locator;
+
+    constructor(page: Page) {
+        this.myAccountBtn = page.getByRole('button', { name: 'My account' });
+        this.loginBtn = page.getByRole('link', { name: 'Login' });
+        this.registerBtn = page.getByRole('link', { name: 'Register' });
+        this.registerTxt = page.getByRole('heading', { name: 'Register Account' });
+        this.loginTxt = page.getByRole('heading', { name: 'Returning Customer' });
+    }
+
+    async navigateToRegister() {
+        await this.myAccountBtn.hover();
+        await this.registerBtn.click();
+        await this.page.waitForURL("**/register");
+        await expect(this.registerTxt).toBeVisible();
+    }
+
+    async navigateToLogin() {
+        await this.myAccountBtn.hover();
+        await this.loginBtn.click();
+        await this.page.waitForURL("**/login");
+        await expect(this.loginTxt).toBeVisible();
+    }
+}
