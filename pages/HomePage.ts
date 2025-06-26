@@ -2,14 +2,14 @@ import { expect, Locator, Page } from '@playwright/test';
 
 export class HomePage {
 
-    private readonly page: Page;
+    // private page: Page;
     private readonly myAccountBtn: Locator;
     private readonly loginBtn: Locator;
     private readonly registerBtn: Locator;
     private readonly registerTxt: Locator;
     private readonly loginTxt: Locator;
 
-    constructor(page: Page) {
+    constructor(private page: Page) {
         this.myAccountBtn = page.getByRole('button', { name: 'My account' });
         this.loginBtn = page.getByRole('link', { name: 'Login' });
         this.registerBtn = page.getByRole('link', { name: 'Register' });
@@ -17,10 +17,14 @@ export class HomePage {
         this.loginTxt = page.getByRole('heading', { name: 'Returning Customer' });
     }
 
+    async naviagteToApp(){
+        await this.page.goto("https://ecommerce-playground.lambdatest.io/index.php?route=common/home");
+    }
+
     async navigateToRegister() {
         await this.myAccountBtn.hover();
         await this.registerBtn.click();
-        await this.page.waitForURL("**/register");
+        //await this.page.waitForURL("**/register");
         await expect(this.registerTxt).toBeVisible();
     }
 
